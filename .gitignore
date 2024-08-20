@@ -1,0 +1,4 @@
+t14s-firmware/pkg
+t14s-firmware/src
+t14s-firmware/linux-firmware
+*.pkg.tar.zst

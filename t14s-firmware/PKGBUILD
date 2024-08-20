@@ -1,0 +1,60 @@
+pkgname="t14s-firmware"
+pkgdesc="ThinkPad T14s firmware"
+pkgver=20240811
+pkgrel=1
+arch=("any")
+options=('!strip')
+url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
+license=('GPL2' 'GPL3' 'custom')
+makedepends=('git')
+options=(!strip)
+pkgname=(t14s-firmware)
+_srcdir=linux-firmware
+
+_backports=('82318c966fd1af87044299d34611751c76f70927')
+
+source=("git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+        "adsp_dtbs.elf"
+        "cdsp_dtbs.elf"
+        "qcadsp8380.mbn"
+        "qccdsp8380.mbn"
+        "qcdxkmsuc8380.mbn")
+sha256sums=('SKIP'
+            'bf64e27beee518f72bb5566148d9db60bd1e75f4962feb27b269a6bc973498ef'
+            '4af13d084abc8d897a520e685d1e4cc5b5581f4b269ab3af948c820cf463de6e'
+            'b0b89944e1251a072101e54adc49e1922f70b4cb0ef429af0fe2f9c7d203f10b'
+            'df68e43ae5122a29f74a15a968b5f5fe1de0f7d869cbf9427627bda0bc7e3d39'
+            '0459165323c670ee07819387244e1b4d850037371ad6328f84e01f14b7048518')
+
+prepare() {
+  cd linux-firmware
+  git checkout tags/${pkgver}
+  local _c
+  for _c in "${_backports[@]}"; do
+    git log --oneline -1 "${_c}"
+    git cherry-pick -n "${_c}"
+  done
+}
+
+package_t14s-firmware() {
+  pkgdesc+=" - T14s / Firmware for ThinkPad T14s"
+
+  install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 ${_srcdir}/WHENCE
+
+  mkdir -pv "${pkgdir}"/usr/lib/firmware
+  cp -rv "${_srcdir}"/qca "${pkgdir}"/usr/lib/firmware
+  cp -rv "${_srcdir}"/qcom "${pkgdir}"/usr/lib/firmware
+  cp -rv "${_srcdir}"/ath12k "${pkgdir}"/usr/lib/firmware
+  cp -rv "${_srcdir}"/rtl_nic "${pkgdir}"/usr/lib/firmware
+
+  # Create T14s firmware directory
+  mkdir -pv "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
+  # Install gpu firmware for T14s
+  cp qcdxkmsuc8380.mbn "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/qcdxkmsuc8380.mbn
+  # Install dsp firmware for T14s
+  cp adsp_dtbs.elf "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
+  cp cdsp_dtbs.elf "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1
+  cp qcadsp8380.mbn "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
+  cp qccdsp8380.mbn "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
+}
+
