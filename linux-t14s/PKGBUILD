@@ -13,7 +13,7 @@ pkgrel=0
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'vboot-utils' 'dtc')
+makedepends=('xmlto' 'kmod' 'inetutils' 'bc' 'git' 'dtc')
 options=('!strip')
 source=('config'
         'linux.preset'
@@ -29,7 +29,7 @@ md5sums=('ba078868177a9100c791bcd33e689c35'
 
 prepare() {
   MAKEFLAGS=-j32
-  echo "Shallow cloning my linux-t14s repo"
+  echo "Shallow cloning linux-t14s repo"
   # if src dir exists, remove it
   [[ -d ${_srcname} ]] && rm -rf ${_srcname}
   git clone --depth=1 https://github.com/anonymix007/linux-t14s.git ${_srcname} -b ${_branch}

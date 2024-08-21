@@ -1,4 +1,5 @@
 */pkg
 */src
 *.pkg.tar.*
+t14s-packages/
 t14s-firmware/linux-firmware
