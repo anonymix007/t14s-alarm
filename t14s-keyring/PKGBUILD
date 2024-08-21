@@ -1,0 +1,23 @@
+pkgname=t14s-keyring
+pkgver=20240821
+pkgrel=0
+pkgdesc='T14s keyring'
+arch=('any')
+url='https://github.com/anonymix007/t14s-alarm'
+license=('GPL')
+install="${pkgname}.install"
+source=('Makefile'
+        't14s.gpg'
+        't14s-revoked'
+        't14s-trusted')
+validpgpkeys=('EEBB4E103131C718FA853444C40DDC98C2007FB5'  # anonymix007
+             )
+sha256sums=('129595928c771fc3d9f00900abd05c8b04f82eb560a8f4dc78537bd494b14e70'
+            '4a14683ce59bc3032faf7055757d646a4cca39c3a828e61eba43870460de3027'
+            '01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b'
+            'eed5a82ff489036a75f9fdab1e53352137067c3061cd05781a81f8c5c154bc16')
+
+package() {
+	cd "${srcdir}"
+	make PREFIX=/usr DESTDIR=${pkgdir} install
+}
