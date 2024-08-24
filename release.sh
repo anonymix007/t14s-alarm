@@ -21,3 +21,7 @@ for pkg in *.pkg.tar.xz; do
 done
 
 repo-add --sign linux-t14s.db.tar.gz *.pkg.tar.xz
+
+yes | gh release delete packages
+gh release create packages --notes ""
+gh release upload packages *

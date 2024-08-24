@@ -1,7 +1,7 @@
 pkgname="t14s-firmware"
 pkgdesc="ThinkPad T14s firmware"
 pkgver=20240811
-pkgrel=0
+pkgrel=2
 arch=("any")
 options=('!strip')
 url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
@@ -18,13 +18,18 @@ source=("git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firm
         "cdsp_dtbs.elf"
         "qcadsp8380.mbn"
         "qccdsp8380.mbn"
-        "qcdxkmsuc8380.mbn")
+        "qcdxkmsuc8380.mbn"
+        "hmtbtfw20.tlv"
+        "hmtnv20.b112"
+        )
 sha256sums=('SKIP'
             'bf64e27beee518f72bb5566148d9db60bd1e75f4962feb27b269a6bc973498ef'
             '4af13d084abc8d897a520e685d1e4cc5b5581f4b269ab3af948c820cf463de6e'
             'b0b89944e1251a072101e54adc49e1922f70b4cb0ef429af0fe2f9c7d203f10b'
             'df68e43ae5122a29f74a15a968b5f5fe1de0f7d869cbf9427627bda0bc7e3d39'
-            '0459165323c670ee07819387244e1b4d850037371ad6328f84e01f14b7048518')
+            '0459165323c670ee07819387244e1b4d850037371ad6328f84e01f14b7048518'
+            '460549a801a1532d57848422a2c9833d9b638ecab5263367908ac3cde9ed647a'
+            '8b889d62ba0f22d6612ed0f6534aa1399533b851c7cc171661bdba9071855e72')
 
 prepare() {
   cd linux-firmware
@@ -53,8 +58,12 @@ package_t14s-firmware() {
   cp qcdxkmsuc8380.mbn "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/qcdxkmsuc8380.mbn
   # Install dsp firmware for T14s
   cp adsp_dtbs.elf "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
-  cp cdsp_dtbs.elf "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1
+  cp cdsp_dtbs.elf "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
   cp qcadsp8380.mbn "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
   cp qccdsp8380.mbn "${pkgdir}"/usr/lib/firmware/qcom/x1e80100/LENOVO/21N1/
+
+  # Install Bluetooth firmware for T14s
+  cp hmtbtfw20.tlv "${pkgdir}"/usr/lib/firmware/qca/
+  cp hmtnv20.b112 "${pkgdir}"/usr/lib/firmware/qca/
 }
 
