@@ -2,14 +2,14 @@
 # Maintainer: Kevin Mihelich <kevin@archlinuxarm.org>
 
 buildarch=8
-_branch=wip/x1e80100-6.11-rc4
+_branch=wip/x1e80100-6.11-rc5
 
 pkgbase=linux-t14s
-_srcname=linux-6.11-rc4
+_srcname=linux-6.11-rc5
 _kernelname=${pkgbase#linux}
 _desc="ThinkPad T14s (Snapdragon X Elite)"
-pkgver="6.11.rc4"
-pkgrel=2
+pkgver="6.11.rc5"
+pkgrel=0
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -21,7 +21,7 @@ source=('config'
         '90-linux.hook'
         'mkinitcpio.conf.d-t14s.conf'
         )
-md5sums=('ba078868177a9100c791bcd33e689c35'
+md5sums=('71cdd137b3f966f46dc91a4fe9b0f359'
          'af77795e187b242e46b55e9e7ce65899'
          '0a5f16bfec6ad982a2f6782724cca8ba'
          '6f99095fbe9f577233b53a83802aab59'
@@ -30,9 +30,13 @@ md5sums=('ba078868177a9100c791bcd33e689c35'
 prepare() {
   MAKEFLAGS=-j32
   echo "Shallow cloning linux-t14s repo"
-  # if src dir exists, remove it
-  [[ -d ${_srcname} ]] && rm -rf ${_srcname}
-  git clone --depth=1 https://github.com/anonymix007/linux-t14s.git ${_srcname} -b ${_branch}
+  if [[ -d ${_srcname} ]]; then
+    cd $_srcname
+    git fetch --depth=1 origin ${_branch}
+    git checkout -b ${_branch} || (git checkout ${_branch} && git reset --hard origin/${_branch})
+  else
+    git clone --depth=1 https://github.com/anonymix007/linux-t14s.git ${_srcname} -b ${_branch}
+  fi
 
   cd $_srcname
 
