@@ -9,7 +9,7 @@ _srcname=linux-6.11-rc5
 _kernelname=${pkgbase#linux}
 _desc="ThinkPad T14s (Snapdragon X Elite)"
 pkgver="6.11.rc5"
-pkgrel=0
+pkgrel=1
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -21,7 +21,7 @@ source=('config'
         '90-linux.hook'
         'mkinitcpio.conf.d-t14s.conf'
         )
-md5sums=('71cdd137b3f966f46dc91a4fe9b0f359'
+md5sums=('0b4ec5882cc93f93a0c10f60a33ec430'
          'af77795e187b242e46b55e9e7ce65899'
          '0a5f16bfec6ad982a2f6782724cca8ba'
          '6f99095fbe9f577233b53a83802aab59'
