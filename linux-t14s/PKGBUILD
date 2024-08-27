@@ -9,7 +9,7 @@ _srcname=linux-6.11-rc5
 _kernelname=${pkgbase#linux}
 _desc="ThinkPad T14s (Snapdragon X Elite)"
 pkgver="6.11.rc5"
-pkgrel=1
+pkgrel=2
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -20,12 +20,13 @@ source=('config'
         '60-linux.hook'
         '90-linux.hook'
         'mkinitcpio.conf.d-t14s.conf'
-        )
+        'ukify.conf')
 md5sums=('0b4ec5882cc93f93a0c10f60a33ec430'
-         'af77795e187b242e46b55e9e7ce65899'
+         'b19a8389771f20a8a9c5d2c51f78d0e0'
          '0a5f16bfec6ad982a2f6782724cca8ba'
          '6f99095fbe9f577233b53a83802aab59'
-         '746fbd75eb10fb3dcd3428353c29bbe2')
+         '746fbd75eb10fb3dcd3428353c29bbe2'
+         'c16be208ea842bf7bafb24723d2ad387')
 
 prepare() {
   MAKEFLAGS=-j32
@@ -70,7 +71,7 @@ build() {
 
 _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
-  depends=('coreutils' 't14s-firmware' 'kmod' 'mkinitcpio>=0.7')
+  depends=('coreutils' 't14s-firmware' 'kmod' 'mkinitcpio>=0.7' 'systemd-ukify')
   optdepends=('crda: to set the correct wireless channels of your country')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   replaces=('linux-armv8')
@@ -119,6 +120,9 @@ _package() {
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}.hook"
   sed "${_subst}" ../90-linux.hook |
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/90-${pkgbase}.hook"
+
+  # install systemd-ukify config file
+  install -Dm644 ../ukify.conf "${pkgdir}/etc/ukify.conf"
 }
 
 _package-headers() {

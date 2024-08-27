@@ -7,4 +7,5 @@ PRESETS=('default')
 
 #default_config="/etc/mkinitcpio.conf"
 default_image="/boot/initramfs-linux-t14s.img"
-#default_options=""
+default_uki="/boot/linux-t14s.efi"
+default_options="--ukiconfig /etc/ukify.conf --kernelimage /boot/vmlinux"
